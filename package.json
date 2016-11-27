@@ -5,13 +5,14 @@
     "main": "index.js",
     "scripts": {
         "build": "webpack",
-        "start": "webpack-dev-server --content-base build --port 3000"
+        "start": "webpack-dev-server --port 3000"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "webpack": "^1.13.3",
-        "webpack-dev-server": "^1.16.2"
+        "webpack-dev-server": "^1.16.2",
+        "webpack-merge": "^0.19.0"
     }
 }
