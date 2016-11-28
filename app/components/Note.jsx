@@ -29,7 +29,7 @@ export default class Note extends React.Component {
         const { connectDragSource, connectDropTarget, id, onMove, ...props } = this.props;
 
         return connectDragSource(connectDropTarget(
-            <li {...this.props}>
+            <li {...props}>
                 {this.props.children}
             </li>
         ));
