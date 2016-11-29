@@ -2,6 +2,10 @@ const path = require('path');
 
 const webpack = require('webpack');
 const NpmInstallPlugin = require('npm-install-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
+
+const pkg = require('./package.json');
 
 const merge = require('webpack-merge');
 
@@ -23,7 +27,8 @@ const common = {
     },
     output: {
         path: PATHS.build,
-        filename: 'bundle.js'
+        filename: '[name].[chunkhash].js',
+        chunkFilename: '[chunkhash].js'
     },
     module: {
         loaders: [{
@@ -37,7 +42,15 @@ const common = {
                 include: PATHS.app
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'node_modules/html-webpack-template/index.ejs',
+            title: 'Kanban app',
+            appMountId: 'app',
+            inject: false
+        })
+    ]
 };
 
 // Default configuration
@@ -45,7 +58,6 @@ if (TARGET === 'start' || !TARGET) {
     module.exports = merge(common, {
         devtool: 'eval-source-map',
         devServer: {
-            contentBase: PATHS.build,
             historyApiFallback: true,
             hot: true,
             inline: true,
@@ -64,5 +76,25 @@ if (TARGET === 'start' || !TARGET) {
 }
 
 if (TARGET === 'build') {
-    module.exports = merge(common, {});
+    module.exports = merge(common, {
+        entry: {
+            vendor: Object.keys(pkg.dependencies).filter(function(v) {
+                return v !== 'alt-utils';
+            })
+        },
+        plugins: [
+            new CleanPlugin([PATHS.build]),
+            new webpack.optimize.CommonsChunkPlugin({
+                names: ['vendor', 'manifest']
+            }),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': '"production"'
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                }
+            })
+        ]
+    });
 }
