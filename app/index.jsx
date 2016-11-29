@@ -1,5 +1,3 @@
-import './main.css';
-
 import alt from './libs/alt';
 import storage from './libs/storage';
 import persist from './libs/persist';
