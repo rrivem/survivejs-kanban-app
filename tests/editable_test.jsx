@@ -34,7 +34,7 @@ describe('Editable', () => {
         assert.equal(triggered, true);
     });
 
-    it('triggers onEdit', () => {
+    describe('triggers onEdit', () => {
         let triggered = false;
         const newValue = 'newValue';
         const onEdit = (val) => {
@@ -48,9 +48,15 @@ describe('Editable', () => {
         const input = findRenderedDOMComponentWithTag(component, 'input');
         input.value = newValue;
 
-        Simulate.blur(input);
-
-        assert.equal(triggered, true);
+        beforeEach(() => triggered = false);
+        it('when blur', () => {
+            Simulate.blur(input);
+            assert.equal(triggered, true);
+        });
+        it('when hit enter key', () => {
+            Simulate.keyPress(input, { key: 'Enter' })
+            assert.equal(triggered, true);
+        });
     });
 
     it('allows deletion', () => {
