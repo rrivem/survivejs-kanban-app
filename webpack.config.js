@@ -133,7 +133,7 @@ if (TARGET === 'test' || TARGET === 'tdd') {
             loaders: [{
                 test: /\.jsx?$/,
                 loaders: ['babel?cacheDirectory'],
-                include: PATHS.app
+                include: PATHS.test
             }]
         }
     });
