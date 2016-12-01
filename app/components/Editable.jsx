@@ -1,7 +1,22 @@
+/* @flow */
 import React from 'react';
 
-class Editable extends React.Component {
-    render() {
+export default class Editable extends React.Component {
+    static props: {
+        value?: string,
+        editing?: boolean,
+        onEdit?: Function,
+        onDelete?: Function,
+        onValueClick?: Function
+    };
+
+    static defaultProps: {
+        value: '',
+        editing: false,
+        onEdit: () => {}
+    };
+
+    render(): Object {
         const { value, onEdit, onValueClick, editing, onDelete, ...props } = this.props;
 
         return (
@@ -11,7 +26,7 @@ class Editable extends React.Component {
         );
     }
 
-    renderEdit = () => {
+    renderEdit: () => Object = () => {
         return <input
             type="text"
             ref= {
@@ -23,7 +38,7 @@ class Editable extends React.Component {
             onKeyPress={this.checkEnter} />;
     };
 
-    renderValue = () => {
+    renderValue: () => Object = () => {
         const onDelete = this.props.onDelete;
 
         return (
@@ -34,11 +49,11 @@ class Editable extends React.Component {
         );
     };
 
-    renderDelete = () => {
+    renderDelete: () => Object = () => {
         return <button className="delete" onClick={this.props.onDelete}>x</button>;
     };
 
-    checkEnter = (e) => {
+    checkEnter: (e: Object) => void = (e) => {
         if (e.key === 'Enter') {
             this.finishEdit(e);
         }
@@ -48,19 +63,3 @@ class Editable extends React.Component {
         this.props.onEdit(e.target.value);
     };
 }
-
-Editable.propTypes = {
-    value: React.PropTypes.string,
-    editing: React.PropTypes.bool,
-    onEdit: React.PropTypes.func.isRequired,
-    onDelete: React.PropTypes.func,
-    onValueClick: React.PropTypes.func
-};
-
-Editable.defaultProps = {
-    value: '',
-    editing: false,
-    onEdit: () => {}
-};
-
-export default Editable;
