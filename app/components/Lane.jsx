@@ -138,8 +138,7 @@ Lane.propTypes = {
 };
 
 Lane.defaultProps = {
-    name: '',
-    notes: []
+    
 };
 
 export default Lane;
